@@ -14,3 +14,8 @@ const String kHomePath = 'home';
 
 const String kSettingRoute = 'SettingRoute';
 const String kSettingPath = 'setting';
+
+
+//Meal
+const String kMealListRoute = 'MealListRoute';
+const String kMealListPath = '/meal-list';

@@ -16,40 +16,22 @@ import 'package:clean_architecture/core/clients/remote/http/http_client.dart'
     as _i244;
 import 'package:clean_architecture/core/clients/remote/internet_client.dart'
     as _i9;
-import 'package:clean_architecture/features/auth/data/data_sources/auth_local_data_source.dart'
-    as _i322;
-import 'package:clean_architecture/features/auth/data/data_sources/auth_remote_data_source.dart'
-    as _i141;
-import 'package:clean_architecture/features/auth/data/data_sources/session_local_data_source.dart'
-    as _i16;
-import 'package:clean_architecture/features/auth/data/repositories/auth_repository_impl.dart'
-    as _i526;
-import 'package:clean_architecture/features/auth/data/repositories/session_repository_impl.dart'
-    as _i943;
-import 'package:clean_architecture/features/auth/domain/repositories/auth_repository.dart'
-    as _i1003;
-import 'package:clean_architecture/features/auth/domain/repositories/session_repository.dart'
-    as _i150;
-import 'package:clean_architecture/features/auth/domain/use_cases/check_authentication_use_case.dart'
-    as _i481;
-import 'package:clean_architecture/features/auth/domain/use_cases/get_user_data_use_case.dart'
-    as _i817;
-import 'package:clean_architecture/features/auth/domain/use_cases/log_out_use_case.dart'
-    as _i294;
-import 'package:clean_architecture/features/auth/domain/use_cases/login_use_case.dart'
-    as _i68;
-import 'package:clean_architecture/features/auth/domain/use_cases/save_user_data_use_case.dart'
-    as _i661;
-import 'package:clean_architecture/features/auth/domain/use_cases/set_session_use_case.dart'
-    as _i636;
-import 'package:clean_architecture/features/auth/presentation/cubits/login/login_cubit.dart'
-    as _i912;
-import 'package:clean_architecture/features/auth/presentation/cubits/login/login_cubit_use_cases.dart'
-    as _i123;
-import 'package:clean_architecture/features/dashboard/presentation/cubits/dashboard/dashboard_cubit.dart'
-    as _i278;
-import 'package:clean_architecture/features/dashboard/presentation/cubits/dashboard/dashboard_cubit_use_cases.dart'
-    as _i134;
+import 'package:clean_architecture/features/list_meal/data/data_source/meal_remote_data_source.dart'
+    as _i802;
+import 'package:clean_architecture/features/list_meal/data/repositories/meal_repository_impl.dart'
+    as _i724;
+import 'package:clean_architecture/features/list_meal/domain/repositories/meal_repository.dart'
+    as _i516;
+import 'package:clean_architecture/features/list_meal/domain/use_cases/get_meal_list_use_case.dart'
+    as _i102;
+import 'package:clean_architecture/features/list_meal/presentation/cubit/meal_list_cubit.dart'
+    as _i210;
+import 'package:clean_architecture/features/list_meal/presentation/cubit/meal_list_cubit_use_cases.dart'
+    as _i558;
+import 'package:clean_architecture/features/meal_detail/presentation/cubit/meal_detail_cubit.dart'
+    as _i603;
+import 'package:clean_architecture/features/meal_detail/presentation/cubit/meal_detail_cubit_use_cases.dart'
+    as _i205;
 import 'package:clean_architecture/routing/helper/navigation_client.dart'
     as _i389;
 import 'package:clean_architecture/routing/routes.dart' as _i671;
@@ -90,9 +72,16 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i161.InternetConnection>(
       () => internetClientModule.internetConnection,
     );
+    gh.lazySingleton<_i205.MealDetailCubitUseCases>(
+      () => const _i205.MealDetailCubitUseCases(),
+    );
     gh.lazySingleton<_i671.AppRouter>(() => navigationClientModule.appRouter);
     gh.lazySingleton<_i389.NavigationClient>(
       () => _i389.NavigationClientImpl(appRouter: gh<_i671.AppRouter>()),
+    );
+    gh.factory<_i603.MealDetailCubit>(
+      () =>
+          _i603.MealDetailCubit(useCases: gh<_i205.MealDetailCubitUseCases>()),
     );
     gh.lazySingleton<_i37.AppConfig>(
       () => _i37.AppConfigStg(),
@@ -107,11 +96,6 @@ extension GetItInjectableX on _i174.GetIt {
         sharedPreferences: gh<_i460.SharedPreferences>(),
       ),
     );
-    gh.lazySingleton<_i322.AuthLocalDataSource>(
-      () => _i322.AuthLocalDataSourceImpl(
-        localDatabase: gh<_i1009.LocalStorageClient>(),
-      ),
-    );
     gh.lazySingleton<_i37.AppConfig>(
       () => _i37.AppConfigProd(),
       registerFor: {_production},
@@ -120,9 +104,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i9.InternetClientImpl(
         internetConnection: gh<_i161.InternetConnection>(),
       ),
-    );
-    gh.lazySingleton<_i16.SessionLocalDataSource>(
-      () => _i16.SessionLocalDataSourceImpl(gh<_i1009.LocalStorageClient>()),
     );
     gh.lazySingleton<_i244.HttpClient>(
       () => _i244.HttpClientImpl(
@@ -133,63 +114,26 @@ extension GetItInjectableX on _i174.GetIt {
         addInterceptors: gh<bool>(),
       ),
     );
-    gh.lazySingleton<_i141.AuthRemoteDataSource>(
-      () => _i141.AuthRemoteDataSourceImpl(dioClient: gh<_i244.HttpClient>()),
+    gh.lazySingleton<_i802.MealRemoteDataSource>(
+      () => _i802.MealRemoteDataSourceImpl(dioClient: gh<_i244.HttpClient>()),
     );
-    gh.lazySingleton<_i150.SessionRepository>(
-      () => _i943.SessionRepositoryImpl(
-        localDataSource: gh<_i16.SessionLocalDataSource>(),
-      ),
-    );
-    gh.lazySingleton<_i294.LogOutUseCase>(
-      () => _i294.LogOutUseCase(gh<_i150.SessionRepository>()),
-    );
-    gh.lazySingleton<_i636.SetSessionUseCase>(
-      () => _i636.SetSessionUseCase(gh<_i150.SessionRepository>()),
-    );
-    gh.lazySingleton<_i1003.AuthRepository>(
-      () => _i526.AuthRepositoryImpl(
+    gh.lazySingleton<_i516.MealRepository>(
+      () => _i724.MealRepositoryImpl(
+        mealRemoteDataSource: gh<_i802.MealRemoteDataSource>(),
         internet: gh<_i9.InternetClient>(),
-        remoteDataSource: gh<_i141.AuthRemoteDataSource>(),
-        localDataSource: gh<_i322.AuthLocalDataSource>(),
       ),
     );
-    gh.lazySingleton<_i481.CheckAuthenticationUseCase>(
-      () => _i481.CheckAuthenticationUseCase(
-        authRepository: gh<_i1003.AuthRepository>(),
-      ),
-    );
-    gh.lazySingleton<_i817.GetUserDataUseCase>(
+    gh.lazySingleton<_i102.GetMealListUseCase>(
       () =>
-          _i817.GetUserDataUseCase(authRepository: gh<_i1003.AuthRepository>()),
+          _i102.GetMealListUseCase(mealRepository: gh<_i516.MealRepository>()),
     );
-    gh.lazySingleton<_i68.LoginUseCase>(
-      () => _i68.LoginUseCase(authRepository: gh<_i1003.AuthRepository>()),
-    );
-    gh.lazySingleton<_i661.SaveUserDataUseCase>(
-      () => _i661.SaveUserDataUseCase(
-        authRepository: gh<_i1003.AuthRepository>(),
+    gh.lazySingleton<_i558.MealListCubitUseCases>(
+      () => _i558.MealListCubitUseCases(
+        getMealList: gh<_i102.GetMealListUseCase>(),
       ),
     );
-    gh.lazySingleton<_i134.DashboardCubitUseCases>(
-      () => _i134.DashboardCubitUseCases(
-        checkAuthentication: gh<_i481.CheckAuthenticationUseCase>(),
-        logOut: gh<_i294.LogOutUseCase>(),
-      ),
-    );
-    gh.lazySingleton<_i123.LoginCubitUseCases>(
-      () => _i123.LoginCubitUseCases(
-        login: gh<_i68.LoginUseCase>(),
-        saveUserData: gh<_i661.SaveUserDataUseCase>(),
-        setSession: gh<_i636.SetSessionUseCase>(),
-        logOut: gh<_i294.LogOutUseCase>(),
-      ),
-    );
-    gh.factory<_i912.LoginCubit>(
-      () => _i912.LoginCubit(useCases: gh<_i123.LoginCubitUseCases>()),
-    );
-    gh.factory<_i278.DashboardCubit>(
-      () => _i278.DashboardCubit(useCases: gh<_i134.DashboardCubitUseCases>()),
+    gh.factory<_i210.MealListCubit>(
+      () => _i210.MealListCubit(useCases: gh<_i558.MealListCubitUseCases>()),
     );
     return this;
   }

@@ -9,76 +9,74 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:clean_architecture/features/auth/presentation/pages/login/login_page.dart'
-    as _i3;
-import 'package:clean_architecture/features/dashboard/presentation/pages/dashboard/dashboard_page.dart'
-    as _i1;
-import 'package:clean_architecture/features/dashboard/presentation/pages/home/home_page.dart'
-    as _i2;
-import 'package:clean_architecture/features/dashboard/presentation/pages/setting/setting_page.dart'
+import 'package:auto_route/auto_route.dart' as _i3;
+import 'package:clean_architecture/features/list_meal/domain/entities/meal.dart'
     as _i4;
+import 'package:clean_architecture/features/list_meal/presentation/pages/meal_list_page.dart'
+    as _i2;
+import 'package:clean_architecture/features/meal_detail/presentation/pages/meal_detail_page.dart'
+    as _i1;
+import 'package:flutter/material.dart' as _i5;
 
 /// generated route for
-/// [_i1.DashboardPage]
-class DashboardRoute extends _i5.PageRouteInfo<void> {
-  const DashboardRoute({List<_i5.PageRouteInfo>? children})
-    : super(DashboardRoute.name, initialChildren: children);
+/// [_i1.MealDetailPage]
+class MealDetailRoute extends _i3.PageRouteInfo<MealDetailRouteArgs> {
+  MealDetailRoute({
+    required _i4.Meal meal,
+    _i5.Key? key,
+    List<_i3.PageRouteInfo>? children,
+  }) : super(
+         MealDetailRoute.name,
+         args: MealDetailRouteArgs(meal: meal, key: key),
+         initialChildren: children,
+       );
 
-  static const String name = 'DashboardRoute';
+  static const String name = 'MealDetailRoute';
 
-  static _i5.PageInfo page = _i5.PageInfo(
+  static _i3.PageInfo page = _i3.PageInfo(
     name,
     builder: (data) {
-      return const _i1.DashboardPage();
+      final args = data.argsAs<MealDetailRouteArgs>();
+      return _i1.MealDetailPage(meal: args.meal, key: args.key);
     },
   );
 }
 
-/// generated route for
-/// [_i2.HomePage]
-class HomeRoute extends _i5.PageRouteInfo<void> {
-  const HomeRoute({List<_i5.PageRouteInfo>? children})
-    : super(HomeRoute.name, initialChildren: children);
+class MealDetailRouteArgs {
+  const MealDetailRouteArgs({required this.meal, this.key});
 
-  static const String name = 'HomeRoute';
+  final _i4.Meal meal;
 
-  static _i5.PageInfo page = _i5.PageInfo(
-    name,
-    builder: (data) {
-      return const _i2.HomePage();
-    },
-  );
+  final _i5.Key? key;
+
+  @override
+  String toString() {
+    return 'MealDetailRouteArgs{meal: $meal, key: $key}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! MealDetailRouteArgs) return false;
+    return meal == other.meal && key == other.key;
+  }
+
+  @override
+  int get hashCode => meal.hashCode ^ key.hashCode;
 }
 
 /// generated route for
-/// [_i3.LoginPage]
-class LoginRoute extends _i5.PageRouteInfo<void> {
-  const LoginRoute({List<_i5.PageRouteInfo>? children})
-    : super(LoginRoute.name, initialChildren: children);
+/// [_i2.MealListPage]
+class MealListRoute extends _i3.PageRouteInfo<void> {
+  const MealListRoute({List<_i3.PageRouteInfo>? children})
+    : super(MealListRoute.name, initialChildren: children);
 
-  static const String name = 'LoginRoute';
+  static const String name = 'MealListRoute';
 
-  static _i5.PageInfo page = _i5.PageInfo(
+  static _i3.PageInfo page = _i3.PageInfo(
     name,
     builder: (data) {
-      return const _i3.LoginPage();
-    },
-  );
-}
-
-/// generated route for
-/// [_i4.SettingPage]
-class SettingRoute extends _i5.PageRouteInfo<void> {
-  const SettingRoute({List<_i5.PageRouteInfo>? children})
-    : super(SettingRoute.name, initialChildren: children);
-
-  static const String name = 'SettingRoute';
-
-  static _i5.PageInfo page = _i5.PageInfo(
-    name,
-    builder: (data) {
-      return const _i4.SettingPage();
+      return const _i2.MealListPage();
     },
   );
 }

@@ -26,7 +26,7 @@ final class AppConfigProd extends AppConfig {
     : super(
         appTitle: 'Clean Architecture App',
         apiBaseUrl:
-            dotenv.maybeGet('BASE_PRODUCTION') ?? 'https://www.themealdb.com/api/',
+            dotenv.maybeGet('BASE_PRODUCTION') ?? 'https://www.themealdb.com/',
         flavor: Flavor.production,
       );
 }
@@ -37,7 +37,7 @@ final class AppConfigStg extends AppConfig {
     : super(
         appTitle: 'Clean Architecture App Staging',
         apiBaseUrl:
-            dotenv.maybeGet('BASE_STAGING') ?? 'https://www.themealdb.com/api/',
+            dotenv.maybeGet('BASE_STAGING') ?? 'https://www.themealdb.com/',
         flavor: Flavor.staging,
       );
 }
@@ -49,7 +49,7 @@ final class AppConfigDev extends AppConfig {
         appTitle: 'Clean Architecture App Development',
         apiBaseUrl:
             dotenv.maybeGet('BASE_DEVELOPMENT') ??
-            'https://www.themealdb.com/api/',
+            'https://www.themealdb.com/',
         flavor: Flavor.development,
       );
 }

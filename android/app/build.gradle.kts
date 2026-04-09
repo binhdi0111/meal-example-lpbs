@@ -46,19 +46,19 @@ android {
     productFlavors {
         create("production") {
             dimension = "default"
-            resValue("string", "app_name", "CleanArchitecture")
+            resValue("string", "app_name", "Meal")
         }
         create("staging") {
             dimension = "default"
             applicationIdSuffix = ".stg"
             versionNameSuffix = ".stg"
-            resValue("string", "app_name", "CleanArchitecture.STG")
+            resValue("string", "app_name", "Meal.STG")
         }
         create("development") {
             dimension = "default"
             applicationIdSuffix = ".dev"
             versionNameSuffix = ".dev"
-            resValue("string", "app_name", "CleanArchitecture.DEV")
+            resValue("string", "app_name", "Meal.DEV")
         }
     }
 
